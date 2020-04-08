@@ -1,10 +1,10 @@
 {
-  "name": "@grundstein/server",
+  "name": "@grundstein/gss",
   "version": "0.0.1-alpha.0",
   "author": "Wizards & Witches",
-  "homepage": "https://grundstein.github.io/server",
+  "homepage": "https://grundstein.it/gss",
   "license": "AGPL-3.0",
-  "description": "NOT YET BENCHMARKED OR IN PRODUCTION! @grundstein/server. serves static webapps and their apis. caches what it can.",
+  "description": "NOT YET BENCHMARKED OR IN PRODUCTION! @grundstein/gss - grundstein static server. serves images, videos and other rich media files via cdn.",
   "main": "src/index.mjs",
   "engines": {
     "node": ">=13.5.0"
@@ -14,7 +14,7 @@
     "start": "npm run dev",
     "test": "t",
     "format": "f -w",
-    "dev": "src/bin.mjs serve"
+    "dev": "src/bin.mjs"
   },
   "bin": {
     "grundstein-server": "src/bin.mjs",
