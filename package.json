@@ -31,17 +31,13 @@
     "url": "https://github.com/grundstein/server/issues"
   },
   "dependencies": {
+    "@grundstein/commons": "github:grundstein/commons",
     "@grundstein/file-store": "github:grundstein/file-store",
-    "@magic/cli": "0.0.23",
-    "@magic/deep": "0.1.2",
-    "@magic/fs": "0.0.5",
-    "@magic/log": "0.1.4",
-    "@magic/mime-types": "0.0.2",
-    "@magic/types": "0.1.11"
+    "@magic/cli": "0.0.24"
   },
   "devDependencies": {
-    "@magic/format": "0.0.7",
-    "@magic/test": "0.1.40"
+    "@magic/format": "0.0.8",
+    "@magic/test": "0.1.41"
   },
   "keywords": [
     "grundstein",
