@@ -6,7 +6,7 @@ import mimeTypes from '@magic/mime-types'
 
 const { formatLog, getRandomId, respond, sendFile } = lib
 
-export const handler = ({ dir, files }) => async (req, res) => {
+export const handler = dir => async (req, res) => {
   // assign random id to make this call traceable in logs.
   req.id = await getRandomId()
 
@@ -18,10 +18,11 @@ export const handler = ({ dir, files }) => async (req, res) => {
   if (url.endsWith('/')) {
     url = path.join(url, 'index.html')
   }
-
   const fullFilePath = path.join(dir, url)
 
-  if (files.includes(fullFilePath)) {
+  const exists = await fs.exists(fullFilePath)
+
+  if (exists) {
     const buffer = await fs.readFile(fullFilePath)
 
     const mimeExtension = path.extname(fullFilePath).substr(1)
