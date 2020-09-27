@@ -1,10 +1,12 @@
-import log from '@magic/log'
+import path from 'path'
 
-import { lib } from '@grundstein/commons'
+import { fs, lib, log } from '@grundstein/commons'
 
-const { formatLog, getFileEncoding, getRandomId, respond, sendFile } = lib
+import mimeTypes from '@magic/mime-types'
 
-export const handler = store => async (req, res) => {
+const { formatLog, getRandomId, respond, sendFile } = lib
+
+export const handler = ({ dir, files }) => async (req, res) => {
   // assign random id to make this call traceable in logs.
   req.id = await getRandomId()
 
@@ -14,20 +16,29 @@ export const handler = store => async (req, res) => {
 
   let { url } = req
   if (url.endsWith('/')) {
-    url = `${url}index.html`
+    url = path.join(url, 'index.html')
   }
 
-  if (store) {
-    const file = store.get(url)
+  const fullFilePath = path.join(dir, url)
+
+  if (files.includes(fullFilePath)) {
+    const buffer = await fs.readFile(fullFilePath)
+
+    const mimeExtension = path.extname(fullFilePath).substr(1)
+
+    const file = {
+      buffer,
+      mime: mimeTypes[mimeExtension],
+    }
 
     if (file) {
-      sendFile(req, res, file)
+      sendFile(req, res, { file })
       formatLog(req, res, startTime, 'static')
       return
     }
   }
 
-  respond(res, { body: '404 - not found.', code: 404 })
+  respond(req, res, { body: '404 - not found.', code: 404 })
 
   formatLog(req, res, startTime, 404)
 }
