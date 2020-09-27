@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@magic/format": "0.0.13",
+    "@magic/mime-types": "0.0.3",
     "@magic/test": "0.1.52"
   },
   "keywords": [
