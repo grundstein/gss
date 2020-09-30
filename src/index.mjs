@@ -7,10 +7,16 @@ import { handler } from './handler.mjs'
 export const run = async (config = {}) => {
   const startTime = log.hrtime()
 
-  const { dir = 'public', host = '127.0.0.1', port = 2350 } = config
+  const {
+    dir = 'public',
+    host = '127.0.0.1',
+    port = 2350,
+    corsOrigin = false,
+    corsHeaders = 'Origin, X-Requested-With, Content-Type, Accept',
+  } = config
 
   try {
-    const server = http.createServer(handler(dir))
+    const server = http.createServer(handler({ dir, corsOrigin, corsHeaders }))
 
     const clientError = middleware.clientError({ host, port, startTime })
     server.on('clientError', clientError)

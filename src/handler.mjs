@@ -6,7 +6,7 @@ import mimeTypes from '@magic/mime-types'
 
 const { formatLog, getRandomId, respond, sendFile } = lib
 
-export const handler = dir => async (req, res) => {
+export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) => {
   // assign random id to make this call traceable in logs.
   req.id = await getRandomId()
 
@@ -37,7 +37,15 @@ export const handler = dir => async (req, res) => {
     }
 
     if (file) {
-      sendFile(req, res, { file })
+      let headers = []
+      if (corsOrigin) {
+        headers = {
+          'Access-Control-Allow-Origin': corsOrigin,
+          'Access-Control-Allow-Headers': corsHeaders,
+        }
+      }
+
+      sendFile(req, res, { file, headers })
       formatLog(req, res, startTime, 'static')
       return
     }
