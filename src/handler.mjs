@@ -15,9 +15,13 @@ export const handler = dir => async (req, res) => {
   const startTime = log.hrtime()
 
   let { url } = req
+  if (url.includes('?')) {
+    url = url.split('?')[0]
+  }
   if (url.endsWith('/')) {
     url = path.join(url, 'index.html')
   }
+
   const fullFilePath = path.join(dir, url)
 
   const exists = await fs.exists(fullFilePath)
