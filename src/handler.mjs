@@ -4,7 +4,7 @@ import { fs, lib, log } from '@grundstein/commons'
 
 import mimeTypes from '@magic/mime-types'
 
-const { formatLog, getRandomId, respond, sendFile } = lib
+const { formatLog, getRandomId, respond, sendStream } = lib
 
 export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) => {
   // assign random id to make this call traceable in logs.
@@ -24,31 +24,34 @@ export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) =>
 
   const fullFilePath = path.join(dir, url)
 
-  const exists = await fs.exists(fullFilePath)
+  let stat
 
-  if (exists) {
-    const buffer = await fs.readFile(fullFilePath)
+  try {
+    stat = await fs.stat(fullFilePath)
+  } catch (e) {
+    if (e.code !== 'ENOENT') {
+      log.error(e)
+    }
+  }
 
-    const mimeExtension = path.extname(fullFilePath).substr(1)
+  if (stat) {
+    const mimeExtension = path.extname(url).substr(1)
 
     const file = {
-      buffer,
+      size: stat.size,
       mime: mimeTypes[mimeExtension],
+      path: fullFilePath,
     }
 
-    if (file) {
-      let headers = []
-      if (corsOrigin) {
-        headers = {
-          'Access-Control-Allow-Origin': corsOrigin,
-          'Access-Control-Allow-Headers': corsHeaders,
-        }
-      }
-
-      sendFile(req, res, { file, headers })
-      formatLog(req, res, startTime, 'static')
-      return
+    let headers = {}
+    if (corsOrigin) {
+      headers['Access-Control-Allow-Origin'] = corsOrigin
+      headers['Access-Control-Allow-Headers'] = corsHeaders
     }
+
+    sendStream(req, res, { file, headers })
+    formatLog(req, res, startTime, 'static')
+    return
   }
 
   respond(req, res, { body: '404 - not found.', code: 404 })
