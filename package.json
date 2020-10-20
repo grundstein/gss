@@ -7,7 +7,7 @@
   "description": "NOT YET BENCHMARKED OR IN PRODUCTION! @grundstein/gss - grundstein static server. serves images, videos and other rich media files via cdn.",
   "main": "src/index.mjs",
   "engines": {
-    "node": ">=13.5.0"
+    "node": ">=14.14.0"
   },
   "engineStrict": true,
   "scripts": {
