@@ -7,12 +7,12 @@ import mimeTypes from '@magic/mime-types'
 const { formatLog, getRandomId, respond, sendStream } = lib
 
 export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) => {
+  const time = log.hrtime()
+
   // assign random id to make this call traceable in logs.
   req.id = await getRandomId()
 
   req.headers['x-forwarded-for'] = req.id
-
-  const startTime = log.hrtime()
 
   let { url } = req
   if (url.includes('?')) {
@@ -50,11 +50,11 @@ export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) =>
     }
 
     sendStream(req, res, { file, headers })
-    formatLog(req, res, startTime, 'static')
+    formatLog(req, res, { time, type: 'static' })
     return
   }
 
   respond(req, res, { body: '404 - not found.', code: 404 })
 
-  formatLog(req, res, startTime, 404)
+  formatLog(req, res, { time, type: '404' })
 }
