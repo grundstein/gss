@@ -1,29 +1,18 @@
-import http from 'http'
-
-import { log, middleware } from '@grundstein/commons'
+import { lib, log } from '@grundstein/commons'
 
 import { handler } from './handler.mjs'
 
+const { createServer, getProxies } = lib
+
 export const run = async (config = {}) => {
-  const startTime = log.hrtime()
-
-  const {
-    dir = 'public',
-    host = '127.0.0.1',
-    port = 2350,
-    corsOrigin = false,
-    corsHeaders = 'Origin, X-Requested-With, Content-Type, Accept',
-    proxies = [],
-  } = config
-
   try {
-    const server = http.createServer(handler({ dir, corsOrigin, corsHeaders, proxies }))
+    config.startTime = log.hrtime()
 
-    const clientError = middleware.clientError({ host, port, startTime })
-    server.on('clientError', clientError)
+    config.proxies = await getProxies(config)
 
-    const listener = middleware.listener({ host, port, startTime })
-    server.listen(port, host, listener)
+    const worker = await handler(config)
+
+    await createServer(config, worker)
   } catch (e) {
     log.error(e)
     process.exit(1)
