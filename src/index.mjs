@@ -13,10 +13,11 @@ export const run = async (config = {}) => {
     port = 2350,
     corsOrigin = false,
     corsHeaders = 'Origin, X-Requested-With, Content-Type, Accept',
+    proxies = ['localhost'],
   } = config
 
   try {
-    const server = http.createServer(handler({ dir, corsOrigin, corsHeaders }))
+    const server = http.createServer(handler({ dir, corsOrigin, corsHeaders, proxies }))
 
     const clientError = middleware.clientError({ host, port, startTime })
     server.on('clientError', clientError)

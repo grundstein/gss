@@ -4,15 +4,17 @@ import { fs, lib, log } from '@grundstein/commons'
 
 import mimeTypes from '@magic/mime-types'
 
-const { formatLog, getRandomId, respond, sendStream } = lib
+const { formatLog, getHostname, respond, sendStream } = lib
 
-export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) => {
+export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req, res) => {
   const time = log.hrtime()
 
-  // assign random id to make this call traceable in logs.
-  req.id = await getRandomId()
+  const hostname = getHostname(req)
 
-  req.headers['x-forwarded-for'] = req.id
+  if (!proxies.includes(hostname)) {
+    respond(req, res, { body: '403 - Invalid Hostname.', code: 403 })
+    return
+  }
 
   let { url } = req
   if (url.includes('?')) {
@@ -22,7 +24,7 @@ export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) =>
     url = path.join(url, 'index.html')
   }
 
-  const fullFilePath = path.join(dir, url)
+  const fullFilePath = path.join(dir, hostname, url)
 
   let stat
 
@@ -31,6 +33,8 @@ export const handler = ({ dir, corsOrigin, corsHeaders }) => async (req, res) =>
   } catch (e) {
     if (e.code !== 'ENOENT') {
       log.error(e)
+      respond(req, res, { body: '500 - Unknown error.', code: 500 })
+      return
     }
   }
 
