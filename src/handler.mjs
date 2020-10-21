@@ -9,11 +9,14 @@ const { formatLog, getHostname, respond, sendStream } = lib
 export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req, res) => {
   const time = log.hrtime()
 
-  const hostname = getHostname(req)
+  let hostname = ''
+  if (proxies.length) {
+    hostname = getHostname(req)
 
-  if (!proxies.includes(hostname)) {
-    respond(req, res, { body: '403 - Invalid Hostname.', code: 403 })
-    return
+    if (!proxies.includes(hostname)) {
+      respond(req, res, { body: '403 - Invalid Hostname.', code: 403 })
+      return
+    }
   }
 
   let { url } = req

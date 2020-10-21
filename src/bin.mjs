@@ -18,7 +18,7 @@ const opts = {
     '--dir': 'public',
     '--host': '127.0.0.1',
     '--port': 2350,
-    '--proxies': 'localhost',
+    '--proxies': [],
     '--cors-origin': false,
     '--cors-headers': 'Origin, X-Requested-With, Content-Type, Accept',
   },

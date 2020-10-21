@@ -13,7 +13,7 @@ export const run = async (config = {}) => {
     port = 2350,
     corsOrigin = false,
     corsHeaders = 'Origin, X-Requested-With, Content-Type, Accept',
-    proxies = ['localhost'],
+    proxies = [],
   } = config
 
   try {
