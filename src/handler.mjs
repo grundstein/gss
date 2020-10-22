@@ -44,9 +44,11 @@ export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req
   if (stat) {
     const mimeExtension = path.extname(url).substr(1)
 
+    const mime = mimeTypes[mimeExtension]
+
     const file = {
       size: stat.size,
-      mime: mimeTypes[mimeExtension],
+      mime,
       path: fullFilePath,
     }
 
