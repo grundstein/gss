@@ -27,32 +27,47 @@ export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req
     url = path.join(url, 'index.html')
   }
 
-  const fullFilePath = path.join(dir, hostname, url)
+  let fullFilePath = path.join(dir, hostname, url)
+
+  const zipFilePath = `${fullFilePath}.gz`
 
   let stat
 
   try {
-    stat = await fs.stat(fullFilePath)
-  } catch (e) {
-    if (e.code !== 'ENOENT') {
-      log.error(e)
-      respond(req, res, { body: '500 - Unknown error.', code: 500 })
-      return
+    const clientAcceptedEncodings = req.headers['accept-encoding']
+    if (!clientAcceptedEncodings?.includes('gzip')) {
+      // this error gets swallowed
+      throw new Error('no encryption accepted.')
+    }
+
+    stat = await fs.stat(zipFilePath)
+    fullFilePath += '.gz'
+  } catch (_) {
+    try {
+      stat = await fs.stat(fullFilePath)
+    } catch (e) {
+      if (e.code !== 'ENOENT') {
+        log.error(e)
+        respond(req, res, { body: '500 - Unknown error.', code: 500 })
+        return
+      }
     }
   }
 
   if (stat) {
     const mimeExtension = path.extname(url).substr(1)
+    const headers = {}
 
-    const mime = mimeTypes[mimeExtension]
+    if (fullFilePath.endsWith('.gz')) {
+      headers['Content-Encoding'] = 'gzip'
+    }
 
     const file = {
       size: stat.size,
-      mime,
+      mime: mimeTypes[mimeExtension],
       path: fullFilePath,
     }
 
-    let headers = {}
     if (corsOrigin) {
       headers['Access-Control-Allow-Origin'] = corsOrigin
       headers['Access-Control-Allow-Headers'] = corsHeaders
