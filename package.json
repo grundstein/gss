@@ -33,7 +33,7 @@
   "dependencies": {
     "@grundstein/commons": "github:grundstein/commons",
     "@magic/cli": "0.0.29",
-    "@magic/mime-types": "0.0.4"
+    "@magic/mime-types": "0.0.5"
   },
   "devDependencies": {
     "@magic/format": "0.0.17",
