@@ -11,10 +11,10 @@
   },
   "engineStrict": true,
   "scripts": {
-    "start": "npm run dev",
+    "start": "src/bin.mjs",
     "test": "t",
     "format": "f -w",
-    "dev": "src/bin.mjs"
+    "dev": "src/bin.mjs --dir public"
   },
   "bin": {
     "grundstein-server": "src/bin.mjs",
