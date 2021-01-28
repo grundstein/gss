@@ -6,7 +6,7 @@ import run from './index.mjs'
 import fs from '@magic/fs'
 
 const prepare = async () => {
-  const GSS_ENV_FILE = '/home/grundstein/.env'
+  const GSS_ENV_FILE = '/home/grundstein/environment'
 
   let env = { ...process.env }
 
