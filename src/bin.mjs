@@ -10,7 +10,7 @@ const {
   GSS_PORT = 2350,
   GSS_CERT_DIR = '/home/grundstein/ca',
   GSS_PROXY_FILE = '/home/grundstein/proxies',
-  GSS_CORS_ORIGIN = false,
+  GSS_CORS_ORIGIN = '*',
   GSS_CORS_HEADERS = 'Origin, X-Requested-With, Content-Type, Accept',
 } = process.env
 
