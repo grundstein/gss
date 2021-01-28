@@ -69,8 +69,14 @@ export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req
     }
 
     if (corsOrigin) {
-      headers['Access-Control-Allow-Origin'] = corsOrigin
-      headers['Access-Control-Allow-Headers'] = corsHeaders
+      let val = corsOrigin
+       if( corsOrigin.includes(req.host)) {
+        if (corsOrigin!== '*') {
+          val = req.host
+        }
+        headers['Access-Control-Allow-Origin'] = val
+        headers['Access-Control-Allow-Headers'] = corsHeaders
+      }
     }
 
     sendStream(req, res, { file, headers })
