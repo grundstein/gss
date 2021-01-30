@@ -81,6 +81,8 @@ export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req
       headers['Access-Control-Allow-Headers'] = corsHeaders
     }
 
+    console.log(req.headers)
+
     headers['Cache-Control'] = 'public, max-age=600'
 
     sendStream(req, res, { file, headers })
