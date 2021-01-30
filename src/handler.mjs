@@ -72,7 +72,7 @@ export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req
       let val = '*'
       if (corsOrigin !== '*') {
         const forwardedFor = req.headers['x-forwarded-for']
-        if(forwardedFor && corsOrigin.includes(forwardedFor)) {
+        if (forwardedFor && corsOrigin.includes(forwardedFor)) {
           val = forwardedFor
         }
       }
