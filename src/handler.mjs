@@ -6,7 +6,10 @@ import mimeTypes from '@magic/mime-types'
 
 const { formatLog, getHostname, respond, sendStream } = lib
 
-export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req, res) => {
+export const handler = ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes }) => async (
+  req,
+  res,
+) => {
   const time = log.hrtime()
 
   let hostname = ''
@@ -81,7 +84,16 @@ export const handler = ({ dir, corsOrigin, corsHeaders, proxies }) => async (req
       headers['Access-Control-Allow-Headers'] = corsHeaders
     }
 
-    headers['Cache-Control'] = 'public, max-age=600'
+    let maxAge = '600'
+
+    const isImmutable = immutableFiletypes.some(f => file.path.includes(`.${f}`))
+
+    if (isImmutable) {
+      const secondsToCache = 60 * 60 * 24 * 365 // one year
+      maxAge = `max-age=${secondsToCache}, immutable`
+    }
+
+    headers['Cache-Control'] = `public, ${maxAge}`
 
     sendStream(req, res, { file, headers })
     formatLog(req, res, { time, type: 'static' })

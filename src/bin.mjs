@@ -27,6 +27,7 @@ const prepare = async () => {
     GSS_PROXY_FILE = '/home/grundstein/proxies',
     GSS_CORS_ORIGIN = '*',
     GSS_CORS_HEADERS = 'Origin, X-Requested-With, Content-Type, Accept',
+    GSS_IMMUTABLE_FILETYPES = ['glb', 'mp4', 'webm', 'mp3'],
   } = env
 
   const opts = {
@@ -38,6 +39,7 @@ const prepare = async () => {
       ['--proxy-file'],
       ['--cors-origin', '--cors', '-c'],
       ['--cors-headers'],
+      ['--immutable-filetypes'],
     ],
     default: {
       '--dir': GSS_DIR,
@@ -47,6 +49,7 @@ const prepare = async () => {
       '--proxy-file': GSS_PROXY_FILE,
       '--cors-origin': GSS_CORS_ORIGIN,
       '--cors-headers': GSS_CORS_HEADERS,
+      '--immutable-filetypes': GSS_IMMUTABLE_FILETYPES,
     },
     single: ['--dir', '--host', '--port', '--cors-origin', '--cors-headers', '--proxy-file'],
     help: {
@@ -59,6 +62,7 @@ const prepare = async () => {
         '--proxy-file': 'file with a list of proxies, split on newlines',
         '--cors-origin': 'value of the Access-Control-Allow-Origin http header',
         '--cors-headers': 'value of the Access-Controll-Allow-Headers http header',
+        '--immutable-filetypes': 'list of extensions that should be served as immutable',
       },
       example: `
 # serve host separated files in ./public/ for host "localhost":
