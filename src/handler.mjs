@@ -6,7 +6,7 @@ import mimeTypes from '@magic/mime-types'
 
 const { formatLog, getHostname, respond, sendStream } = lib
 
-export const handler = ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes }) => async (
+export const handler = ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [] }) => async (
   req,
   res,
 ) => {
