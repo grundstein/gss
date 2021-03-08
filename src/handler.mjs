@@ -6,10 +6,13 @@ import mimeTypes from '@magic/mime-types'
 
 const { formatLog, getHostname, respond, sendStream } = lib
 
-export const handler = ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [] }) => async (
-  req,
-  res,
-) => {
+export const handler = ({
+  dir,
+  corsOrigin,
+  corsHeaders,
+  proxies,
+  immutableFiletypes = [],
+}) => async (req, res) => {
   const time = log.hrtime()
 
   let hostname = ''
@@ -101,6 +104,5 @@ export const handler = ({ dir, corsOrigin, corsHeaders, proxies, immutableFilety
   }
 
   respond(req, res, { body: '404 - not found.', code: 404 })
-
   formatLog(req, res, { time, type: '404' })
 }
