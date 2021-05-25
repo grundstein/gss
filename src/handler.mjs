@@ -31,7 +31,15 @@ export const handler = ({
   }
   if (url.endsWith('/')) {
     url = path.join(url, 'index.html')
+  } else {
+    const extname = path.extname(url)
+    if (!extname) {
+      url += '/'
+      respond(req, res, { code: 302, headers: { Location: url } })
+      return
+    }
   }
+
 
   let fullFilePath = path.join(dir, hostname, url)
 
