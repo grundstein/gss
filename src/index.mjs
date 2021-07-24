@@ -10,7 +10,7 @@ export const run = async (config = {}) => {
 
     config.proxies = await getProxies(config)
 
-    const worker = await handler(config)
+    const worker = handler(config)
 
     await createServer(config, worker)
   } catch (e) {
