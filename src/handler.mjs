@@ -90,16 +90,17 @@ export const handler =
         headers['Access-Control-Allow-Headers'] = corsHeaders
       }
 
-      let maxAge = '600'
+      let maxAge = 600 // default: cache 10 minutes
+      let immutable = ''
 
       const isImmutable = immutableFiletypes.some(f => file.path.includes(`.${f}`))
 
       if (isImmutable) {
-        const secondsToCache = 60 * 60 * 24 * 365 // one year
-        maxAge = `max-age=${secondsToCache}, immutable`
+        maxAge = 60 * 60 * 24 * 365 // one year
+        immutable = `, immutable`
       }
 
-      headers['Cache-Control'] = `public, ${maxAge}`
+      headers['Cache-Control'] = `public, must-revalidate, max-age=${maxAge}${immutable}`
 
       sendStream(req, res, { file, headers })
       formatLog(req, res, { time, type: 'static' })
