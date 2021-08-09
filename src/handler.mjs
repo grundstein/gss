@@ -100,7 +100,17 @@ export const handler =
         immutable = `, immutable`
       }
 
-      headers['Cache-Control'] = `public, must-revalidate, max-age=${maxAge}${immutable}`
+      headers['Cache-Control'] = `public, max-age=${maxAge}${immutable}`
+
+      // takes 0.01 ms, refactor later,
+      // this one function almost doubles response time
+      headers.etag = (stat.size + stat.mtimeMs).toString(36)
+
+      if (headers.etag === req.headers['if-none-match']) {
+        respond(req, res, { code: 304, headers, body: '' })
+        formatLog(req, res, { time, type: 'cached' })
+        return
+      }
 
       sendStream(req, res, { file, headers })
       formatLog(req, res, { time, type: 'static' })
