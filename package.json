@@ -32,13 +32,13 @@
   },
   "dependencies": {
     "@grundstein/commons": "github:grundstein/commons",
-    "@magic/cli": "0.0.33",
+    "@magic/cli": "0.0.34",
     "@magic/fs": "0.0.15",
     "@magic/mime-types": "0.0.10"
   },
   "devDependencies": {
-    "@magic/format": "0.0.28",
-    "@magic/test": "0.1.73"
+    "@magic/format": "0.0.29",
+    "@magic/test": "0.1.74"
   },
   "keywords": [
     "grundstein",
