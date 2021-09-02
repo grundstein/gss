@@ -111,10 +111,11 @@ export const handler =
 
       headers['Cache-Control'] = `public, max-age=${maxAge}${immutable}`
 
-      // takes 0.01 ms, refactor later,
-      // this one function almost doubles response time
       headers.etag = etag({ file: fullFilePath, stat })
 
+      /*
+       * bail early if we have a client cache match
+       */
       if (headers.etag === req.headers['if-none-match']) {
         respond(req, res, { code: 304, headers, body: '' })
         formatLog(req, res, { time, type: 'cached' })
