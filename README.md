@@ -1,26 +1,26 @@
 ## @grundstein/gss
 
-### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET!
-
 ## gss: grundstein static (file) server
 
 ### features:
 
-#### static file serving
-
+#### static files
 serves a local directory (process.cwd() + 'public' is the default)
 
-#### small files get served from memory
-
-caches small files in memory
-
 #### big files get sent as streams
+video and audio files get sent as streams
 
-never caches big files, instead sends them directly from disk, as streams.
+#### serves compressed files
+if .gz files exist in the public directory, those will be served.
+
+#### client caching
+caches client files using a built-in etag generator and cache.
+if public/etags.csv exists, which [@grundstein/prepare-static-files](https://github.com/grundstein/prepare-static-files) generates,
+the contents of this file will be used as cache.
 
 #### installation
 ```bash
-npm i @grundstein/gss
+npm i -g @grundstein/gss
 ```
 
 #### usage
