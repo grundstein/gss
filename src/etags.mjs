@@ -25,17 +25,19 @@ export const getEtag =
   }
 
 export const etags = async dir => {
-  const etagFile = path.join(dir, 'etags.csv')
-
-  const exists = await fs.exists(etagFile)
-
   let cache = {}
 
-  if (exists) {
-    const contents = await fs.readFile(etagFile, 'utf8')
+  if (dir) {
+    const etagFile = path.join(dir, 'etags.csv')
 
-    const lines = contents.split('\n')
-    cache = Object.fromEntries(lines.map(line => line.split(',')))
+    const exists = await fs.exists(etagFile)
+
+    if (exists) {
+      const contents = await fs.readFile(etagFile, 'utf8')
+
+      const lines = contents.split('\n')
+      cache = Object.fromEntries(lines.map(line => line.split(',')))
+    }
   }
 
   return getEtag({ dir, cache })
