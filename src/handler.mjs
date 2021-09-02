@@ -7,8 +7,10 @@ import mimeTypes from '@magic/mime-types'
 const { formatLog, getHostname, respond, sendStream } = lib
 
 export const handler =
-  ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [] }) =>
+  ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [], path404 = false }) =>
   async (req, res) => {
+    let is404 = false
+
     const time = log.hrtime()
 
     let hostname = ''
@@ -55,7 +57,12 @@ export const handler =
       try {
         stat = await fs.stat(fullFilePath)
       } catch (e) {
-        if (e.code !== 'ENOENT') {
+        if (path404) {
+          stat = await fs.stat(`${path404}.gz`)
+          fullFilePath = `${path404}.gz`
+        }
+
+        if (!stat && e.code !== 'ENOENT') {
           log.error(e)
           respond(req, res, { body: '500 - Unknown error.', code: 500 })
           return
@@ -112,7 +119,7 @@ export const handler =
         return
       }
 
-      sendStream(req, res, { file, headers })
+      sendStream(req, res, { file, headers, code: is404 ? 404 : 200 })
       formatLog(req, res, { time, type: 'static' })
       return
     }
