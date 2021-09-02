@@ -10,7 +10,7 @@ export const run = async (config = {}) => {
     const args = {
       startTime: log.hrtime(),
       proxies: await getProxies(config),
-      etags: await etags(config),
+      etag: await etags(config.dir),
       ...config,
     }
 

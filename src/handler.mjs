@@ -7,7 +7,7 @@ import mimeTypes from '@magic/mime-types'
 const { formatLog, getHostname, respond, sendStream } = lib
 
 export const handler =
-  ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [], path404 = false }) =>
+  ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [], path404 = false, etag }) =>
   async (req, res) => {
     const time = log.hrtime()
 
@@ -113,7 +113,7 @@ export const handler =
 
       // takes 0.01 ms, refactor later,
       // this one function almost doubles response time
-      headers.etag = (stat.size + stat.mtimeMs).toString(36)
+      headers.etag = etag({ file: fullFilePath, stat })
 
       if (headers.etag === req.headers['if-none-match']) {
         respond(req, res, { code: 304, headers, body: '' })
