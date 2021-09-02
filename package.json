@@ -4,7 +4,7 @@
   "author": "Wizards & Witches",
   "homepage": "https://grundstein.it/gss",
   "license": "AGPL-3.0",
-  "description": "@grundstein static server. serves images, videos and other rich media files via cdn.",
+  "description": "@grundstein static server. serves images, videos and other rich media files.",
   "main": "src/index.mjs",
   "engines": {
     "node": ">=14.14.0"
