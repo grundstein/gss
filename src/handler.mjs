@@ -9,9 +9,9 @@ const { formatLog, getHostname, respond, sendStream } = lib
 export const handler =
   ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [], path404 = false }) =>
   async (req, res) => {
-    let is404 = false
-
     const time = log.hrtime()
+
+    let code = 404
 
     let hostname = ''
     if (proxies.length) {
@@ -53,6 +53,7 @@ export const handler =
 
       stat = await fs.stat(zipFilePath)
       fullFilePath += '.gz'
+      code = 200
     } catch (_) {
       try {
         stat = await fs.stat(fullFilePath)
@@ -60,6 +61,7 @@ export const handler =
         if (path404) {
           stat = await fs.stat(`${path404}.gz`)
           fullFilePath = `${path404}.gz`
+          code = 404
         }
 
         if (!stat && e.code !== 'ENOENT') {
@@ -119,7 +121,7 @@ export const handler =
         return
       }
 
-      sendStream(req, res, { file, headers, code: is404 ? 404 : 200 })
+      sendStream(req, res, { file, headers, code })
       formatLog(req, res, { time, type: 'static' })
       return
     }
