@@ -1,10 +1,10 @@
 {
   "name": "@grundstein/gss",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.0",
   "author": "Wizards & Witches",
   "homepage": "https://grundstein.it/gss",
   "license": "AGPL-3.0",
-  "description": "NOT YET BENCHMARKED OR IN PRODUCTION! @grundstein/gss - grundstein static server. serves images, videos and other rich media files via cdn.",
+  "description": "@grundstein static server. serves images, videos and other rich media files via cdn.",
   "main": "src/index.mjs",
   "engines": {
     "node": ">=14.14.0"
