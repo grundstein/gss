@@ -5,18 +5,24 @@
 ### features:
 
 #### static files
-serves a local directory (process.cwd() + 'public' is the default)
+serves a local directory from disk.
 
 #### big files get sent as streams
 video and audio files get sent as streams
 
 #### serves compressed files
-if .gz files exist in the public directory, those will be served.
+if .gz files exist in the public directory.
 
 #### client caching
-caches client files using a built-in etag generator and cache.
-if public/etags.csv exists, which [@grundstein/prepare-static-files](https://github.com/grundstein/prepare-static-files) generates,
+cache control headers cache client files.
+if public/etags.csv exists,
+which [@grundstein/prepare-static-files](https://github.com/grundstein/prepare-static-files) generates,
 the contents of this file will be used as cache.
+
+#### fast
+server starts in 5 - 10 milliseconds,
+response for a 100kb file takes 0.1 - 0.5 milliseconds.
+load does not change this numbers until the hard disc bandwith limits are reached.
 
 #### installation
 ```bash
@@ -29,7 +35,7 @@ npm i -g @grundstein/gss
 gss --help
 
 // serve the ./public directory
-gss
+gss --dir public
 
 // serve specific directory
 gss --dir local/directory/path
@@ -37,3 +43,8 @@ gss --dir local/directory/path
 // serve on specific host and port
 gss --host grundstein.it --port 2323
 ```
+
+### changelog
+
+#### v0.0.1
+first release
