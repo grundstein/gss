@@ -1,18 +1,22 @@
 import { lib, log } from '@grundstein/commons'
 
 import { handler } from './handler.mjs'
+import { etags } from './etags.mjs'
 
 const { createServer, getProxies } = lib
 
 export const run = async (config = {}) => {
   try {
-    config.startTime = log.hrtime()
+    const args = {
+      startTime: log.hrtime(),
+      proxies: await getProxies(config),
+      etags: await etags(config),
+      ...config,
+    }
 
-    config.proxies = await getProxies(config)
+    const worker = handler(args)
 
-    const worker = handler(config)
-
-    await createServer(config, worker)
+    await createServer(args, worker)
   } catch (e) {
     log.error(e)
     process.exit(1)
