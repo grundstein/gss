@@ -48,3 +48,9 @@ gss --host grundstein.it --port 2323
 
 #### v0.0.1
 first release
+
+#### v0.0.2
+fix error if 404.html.gz does not exist, serve 404.html instead.
+
+#### 0.0.3 - unreleased
+...
