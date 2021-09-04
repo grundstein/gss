@@ -59,9 +59,19 @@ export const handler =
         stat = await fs.stat(fullFilePath)
       } catch (e) {
         if (path404) {
-          stat = await fs.stat(`${path404}.gz`)
-          fullFilePath = `${path404}.gz`
           code = 404
+
+          /*
+           * Find out if a gzipped 404.html file exists, if not load the unzipped variant.
+           */
+          let maybeGzipped404 = path404
+          try {
+            stat = await fs.stat(`${maybeGzipped404}.gz`)
+            fullFilePath = `${maybeGzipped404}.gz`
+          } catch (e) {
+            stat = await fs.stat(`${maybeGzipped404}`)
+            fullFilePath = maybeGzipped404
+          }
         }
 
         if (!stat && e.code !== 'ENOENT') {
