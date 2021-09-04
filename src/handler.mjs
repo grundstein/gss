@@ -121,6 +121,9 @@ export const handler =
 
       headers['Cache-Control'] = `public, max-age=${maxAge}${immutable}`
 
+      /*
+       * the etag function creates an internal, in-memory cache of the etags.
+       */
       headers.etag = etag({ file: fullFilePath, stat })
 
       /*
