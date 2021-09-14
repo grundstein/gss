@@ -53,5 +53,8 @@ first release
 * fix error if 404.html.gz does not exist, serve 404.html instead.
 * update dependencies
 
-#### 0.0.3 - unreleased
+#### 0.0.3
+* add "--cache no" cli argument to prevent cache-control headers from being sent.
+
+#### 0.0.4 - unreleased
 ...
