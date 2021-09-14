@@ -39,6 +39,7 @@ const prepare = async () => {
       ['--proxy-file'],
       ['--cors-origin', '--cors', '-c'],
       ['--cors-headers'],
+      ['--cache'],
       ['--immutable-filetypes'],
     ],
     default: {
@@ -50,8 +51,17 @@ const prepare = async () => {
       '--cors-origin': GSS_CORS_ORIGIN,
       '--cors-headers': GSS_CORS_HEADERS,
       '--immutable-filetypes': GSS_IMMUTABLE_FILETYPES,
+      // '--cache': false,
     },
-    single: ['--dir', '--host', '--port', '--cors-origin', '--cors-headers', '--proxy-file'],
+    single: [
+      '--dir',
+      '--host',
+      '--port',
+      '--cors-origin',
+      '--cors-headers',
+      '--proxy-file',
+      '--cache',
+    ],
     help: {
       name: 'gss: grundstein static server',
       header: 'serves static files from disk via streams.',
@@ -63,6 +73,7 @@ const prepare = async () => {
         '--cors-origin': 'value of the Access-Control-Allow-Origin http header',
         '--cors-headers': 'value of the Access-Controll-Allow-Headers http header',
         '--immutable-filetypes': 'list of extensions that should be served as immutable',
+        '--cache': 'set to "no" do not send cache-control headers and do not use statuscode 304.',
       },
       example: `
 # serve host separated files in ./public/ for host "localhost":
@@ -70,6 +81,10 @@ gss
 
 # serve files using an absolute path, custom host, port, and proxies.
 gss --dir /var/www/html --host grundstein.it --port 2323 --proxies example.org example.com
+
+# development
+gss --dir ./public --cache no
+# note: --cache can be a footgun, hence the required "no" to prevent being ambiguous with the flag.
 `,
     },
   }

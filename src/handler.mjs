@@ -7,7 +7,16 @@ import mimeTypes from '@magic/mime-types'
 const { formatLog, getHostname, respond, sendStream } = lib
 
 export const handler =
-  ({ dir, corsOrigin, corsHeaders, proxies, immutableFiletypes = [], path404 = false, etag }) =>
+  ({
+    dir,
+    corsOrigin,
+    corsHeaders,
+    proxies,
+    cache,
+    immutableFiletypes = [],
+    path404 = false,
+    etag,
+  }) =>
   async (req, res) => {
     const time = log.hrtime()
 
@@ -109,17 +118,19 @@ export const handler =
         headers['Access-Control-Allow-Headers'] = corsHeaders
       }
 
-      let maxAge = 600 // default: cache 10 minutes
-      let immutable = ''
+      if (cache !== 'no') {
+        let maxAge = 600 // default: cache 10 minutes
+        let immutable = ''
 
-      const isImmutable = immutableFiletypes.some(f => file.path.includes(`.${f}`))
+        const isImmutable = immutableFiletypes.some(f => file.path.includes(`.${f}`))
 
-      if (isImmutable) {
-        maxAge = 60 * 60 * 24 * 365 // one year
-        immutable = `, immutable`
+        if (isImmutable) {
+          maxAge = 60 * 60 * 24 * 365 // one year
+          immutable = `, immutable`
+        }
+
+        headers['Cache-Control'] = `public, max-age=${maxAge}${immutable}`
       }
-
-      headers['Cache-Control'] = `public, max-age=${maxAge}${immutable}`
 
       /*
        * the etag function creates an internal, in-memory cache of the etags.
@@ -127,9 +138,10 @@ export const handler =
       headers.etag = etag({ file: fullFilePath, stat })
 
       /*
-       * bail early if we have a client cache match
+       * bail early if we have a client cache match,
+       * but not if "--cache no" cli arg is used
        */
-      if (headers.etag === req.headers['if-none-match']) {
+      if (cache !== 'no' && headers.etag === req.headers['if-none-match']) {
         respond(req, res, { code: 304, headers, body: '' })
         formatLog(req, res, { time, type: 'cached' })
         return
