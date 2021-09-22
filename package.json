@@ -14,7 +14,7 @@
     "start": "src/bin.mjs",
     "test": "t",
     "format": "f -w",
-    "dev": "src/bin.mjs --dir public --cache no -p 8000"
+    "dev": "src/bin.mjs --dir public --cache no"
   },
   "bin": {
     "grundstein-server": "src/bin.mjs",
