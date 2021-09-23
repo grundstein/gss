@@ -31,7 +31,7 @@
     "url": "https://github.com/grundstein/server/issues"
   },
   "dependencies": {
-    "@grundstein/commons": "0.0.1",
+    "@grundstein/commons": "0.0.2",
     "@magic/cli": "0.0.34",
     "@magic/fs": "0.0.16",
     "@magic/mime-types": "0.0.10"
