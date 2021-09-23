@@ -1,17 +1,18 @@
 ## @grundstein/gss
 
-## gss: grundstein static (file) server
+**g**rundstein **s**tatic (file) **s**erver
+
+serves a local directory from disk.
+
+### WIP. NOT FULLY AUTOMATED, TESTED AND BENCHMARKED YET!
 
 ### features:
-
-#### static files
-serves a local directory from disk.
 
 #### big files get sent as streams
 video and audio files get sent as streams
 
 #### serves compressed files
-if .gz files exist in the public directory.
+if .gz files exist. no runtime-compression.
 
 #### client caching
 cache control headers cache client files.
@@ -20,8 +21,8 @@ which [@grundstein/prepare-static-files](https://github.com/grundstein/prepare-s
 the contents of this file will be used as cache.
 
 #### fast
-server starts in 5 - 10 milliseconds,
-response for a 100kb file takes 0.1 - 0.5 milliseconds.
+server (re)starts in ~15 ms.
+responses take 0.1 - 0.5 ms before sending the first bits back.
 load does not change this numbers until the hard disc bandwith limits are reached.
 
 #### installation
