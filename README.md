@@ -61,6 +61,7 @@ first release
 * update dependencies
 * use log.server.request instead of formatLog
 * use lib.sendStream and lib.response instead of importing those functions directly
+* use lib.etags instead of local function
 
 #### 0.0.5 - unreleased
 ...
