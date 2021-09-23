@@ -4,8 +4,6 @@ import { fs, lib, log } from '@grundstein/commons'
 
 import mimeTypes from '@magic/mime-types'
 
-const { formatLog, getHostname, respond, sendStream } = lib
-
 export const handler =
   ({
     dir,
@@ -24,10 +22,10 @@ export const handler =
 
     let hostname = ''
     if (proxies.length) {
-      hostname = getHostname(req)
+      hostname = lib.getHostname(req)
 
       if (!proxies.includes(hostname)) {
-        respond(req, res, { body: '403 - Invalid Hostname.', code: 403 })
+        lib.respond(req, res, { body: '403 - Invalid Hostname.', code: 403 })
         return
       }
     }
@@ -42,7 +40,7 @@ export const handler =
       const extname = path.extname(url)
       if (!extname) {
         url += '/'
-        respond(req, res, { code: 302, headers: { Location: url } })
+        lib.respond(req, res, { code: 302, headers: { Location: url } })
         return
       }
     }
@@ -85,7 +83,7 @@ export const handler =
 
         if (!stat && e.code !== 'ENOENT') {
           log.error(e)
-          respond(req, res, { body: '500 - Unknown error.', code: 500 })
+          lib.respond(req, res, { body: '500 - Unknown error.', code: 500 })
           return
         }
       }
@@ -142,16 +140,16 @@ export const handler =
        * but not if "--cache no" cli arg is used
        */
       if (cache !== 'no' && headers.etag === req.headers['if-none-match']) {
-        respond(req, res, { code: 304, headers, body: '' })
-        formatLog(req, res, { time, type: 'cached' })
+        lib.respond(req, res, { code: 304, headers, body: '' })
+        log.request(req, res, { time, type: 'cached' })
         return
       }
 
-      sendStream(req, res, { file, headers, code })
-      formatLog(req, res, { time, type: 'static' })
+      lib.sendStream(req, res, { file, headers, code })
+      log.request(req, res, { time, type: 'static' })
       return
     }
 
-    respond(req, res, { body: '404 - not found.', code: 404 })
-    formatLog(req, res, { time, type: '404' })
+    lib.respond(req, res, { body: '404 - not found.', code: 404 })
+    log.request(req, res, { time, type: '404' })
   }
