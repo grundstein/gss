@@ -141,15 +141,15 @@ export const handler =
        */
       if (cache !== 'no' && headers.etag === req.headers['if-none-match']) {
         lib.respond(req, res, { code: 304, headers, body: '' })
-        log.request(req, res, { time, type: 'cached' })
+        log.server.request(req, res, { time, type: 'cached' })
         return
       }
 
       lib.sendStream(req, res, { file, headers, code })
-      log.request(req, res, { time, type: 'static' })
+      log.server.request(req, res, { time, type: 'static' })
       return
     }
 
     lib.respond(req, res, { body: '404 - not found.', code: 404 })
-    log.request(req, res, { time, type: '404' })
+    log.server.request(req, res, { time, type: '404' })
   }
