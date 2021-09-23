@@ -57,5 +57,10 @@ first release
 #### 0.0.3
 * add "--cache no" cli argument to prevent cache-control headers from being sent.
 
-#### 0.0.4 - unreleased
+#### 0.0.4
+* update dependencies
+* use log.request instead of formatLog
+* use lib.sendStream and lib.response instead of importing those functions directly
+
+#### 0.0.5 - unreleased
 ...
