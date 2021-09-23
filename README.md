@@ -59,7 +59,7 @@ first release
 
 #### 0.0.4
 * update dependencies
-* use log.request instead of formatLog
+* use log.server.request instead of formatLog
 * use lib.sendStream and lib.response instead of importing those functions directly
 
 #### 0.0.5 - unreleased
