@@ -63,5 +63,9 @@ first release
 * use lib.sendStream and lib.response instead of importing those functions directly
 * use lib.etags instead of local function
 
-#### 0.0.5 - unreleased
+#### 0.0.5
+* update dependencies
+* @magic/mime-types now supports ply files
+
+#### 0.0.6 - unreleased
 ...
