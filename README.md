@@ -70,5 +70,8 @@ first release
 #### 0.0.6 
 update dependencies
 
-#### 0.0.7 - unreleased
+#### 0.0.7
+update dependencies
+
+#### 0.0.8 - unreleased
 ...
