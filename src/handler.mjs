@@ -1,18 +1,19 @@
 import path from 'path'
 
 import { fs, lib, log } from '@grundstein/commons'
-
 import mimeTypes from '@magic/mime-types'
+
+import { defaults } from './defaults.mjs'
 
 export const handler = (args = {}) => {
   const {
-    dir = '/var/www/html',
-    corsOrigin = '*',
-    corsHeaders = 'Origin, X-Requested-With, Content-Type, Accept',
-    immutableFiletypes = ['glb', 'mp4', 'webm', 'mp3'],
-    proxies = [],
-    etag,
-    cache,
+    dir = defaults.dir,
+    corsOrigin = defaults.corsOrigin,
+    corsHeaders = defaults.corsHeaders,
+    immutableFiletypes = defaults.immutableFiletypes,
+    proxies = defaults.proxies,
+    etag = defaults.etag,
+    cache = defaults.cache,
   } = args
 
   return async (req, res) => {
