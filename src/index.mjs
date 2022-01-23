@@ -1,10 +1,12 @@
 import { lib, log } from '@grundstein/commons'
+import { defaults } from './defaults.mjs'
 
 import { handler } from './handler.mjs'
 
 export const run = async (config = {}) => {
   try {
     const args = {
+      ...defaults,
       startTime: log.hrtime(),
       proxies: await lib.getProxies(config),
       etag: await lib.etags(config.dir),
