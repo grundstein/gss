@@ -84,5 +84,8 @@ add proxies = [] to defaults
 #### 0.0.10
 fix typo
 
-#### 0.0.11 - unreleased
+#### 0.0.11
+readd path404 argument destructuring
+
+#### 0.0.12 - unreleased
 ...
