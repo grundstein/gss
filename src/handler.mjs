@@ -14,6 +14,7 @@ export const handler = (args = {}) => {
     proxies = defaults.proxies,
     etag = defaults.etag,
     cache = defaults.cache,
+    path404,
   } = args
 
   return async (req, res) => {
