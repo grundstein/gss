@@ -9,4 +9,5 @@ export const defaults = {
   immutableFileTypes: ['glb', 'mp4', 'webm', 'mp3'],
   cache: false,
   etag: false,
+  proxies: [],
 }
