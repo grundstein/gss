@@ -4,18 +4,18 @@ import { fs, lib, log } from '@grundstein/commons'
 
 import mimeTypes from '@magic/mime-types'
 
-export const handler =
-  ({
-    dir,
-    corsOrigin,
-    corsHeaders,
-    proxies,
-    cache,
-    immutableFiletypes = [],
-    path404 = false,
+export const handler = (args = {}) => {
+  const {
+    dir = '/var/www/html',
+    corsOrigin = '*',
+    corsHeaders = 'Origin, X-Requested-With, Content-Type, Accept',
+    immutableFiletypes = ['glb', 'mp4', 'webm', 'mp3'],
+    proxies = [],
     etag,
-  }) =>
-  async (req, res) => {
+    cache,
+  } = args
+
+  return async (req, res) => {
     const time = log.hrtime()
 
     let code = 404
@@ -153,3 +153,4 @@ export const handler =
     lib.respond(req, res, { body: '404 - not found.', code: 404 })
     log.server.request(req, res, { time, type: '404' })
   }
+}
