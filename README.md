@@ -78,5 +78,8 @@ update dependencies
 * handler does not error if called without arguments, uses defaults instead.
 * added defaults file and using it everywhere
 
-#### 0.0.9 - unreleased
+#### 0.0.9
+add proxies = [] to defaults
+
+#### 0.0.10 - unreleased
 ...
