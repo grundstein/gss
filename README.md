@@ -67,11 +67,15 @@ first release
 * update dependencies
 * @magic/mime-types now supports ply files
 
-#### 0.0.6 
+#### 0.0.6
 update dependencies
 
 #### 0.0.7
 update dependencies
 
-#### 0.0.8 - unreleased
+#### 0.0.8
+* update dependencies
+* handler does not error if called without arguments, uses defaults instead.
+
+#### 0.0.9 - unreleased
 ...
