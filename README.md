@@ -81,5 +81,8 @@ update dependencies
 #### 0.0.9
 add proxies = [] to defaults
 
-#### 0.0.10 - unreleased
+#### 0.0.10
+fix typo
+
+#### 0.0.11 - unreleased
 ...
