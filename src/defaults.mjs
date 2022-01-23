@@ -6,7 +6,7 @@ export const defaults = {
   proxyFile: '/home/grundstein/proxies',
   corsOrigin: '*',
   corsHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
-  immutableFileTypes: ['glb', 'mp4', 'webm', 'mp3'],
+  immutableFiletypes: ['glb', 'mp4', 'webm', 'mp3'],
   cache: false,
   etag: false,
   proxies: [],
