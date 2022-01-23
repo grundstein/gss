@@ -1,9 +1,13 @@
-import { is } from '@magic/test'
+import { is, version } from '@magic/test'
 
-import defaultRunCluster, { run } from '../src/index.mjs'
+import * as lib from '../src/index.mjs'
+
+const spec = {
+  run: is.fn,
+  default: is.fn,
+}
 
 export default [
-  { fn: () => run, expect: is.fn, info: 'runCluster is a function' },
-  { fn: () => defaultRunCluster, expect: is.fn, info: 'runCluster default export is a function' },
-  { fn: is.deep.eq(run, defaultRunCluster), info: 'runCluster exports are equal' },
+  ...version(lib, spec),
+  { fn: is.deep.equal(lib.run, lib.default), info: 'run and default exports are not equal' },
 ]
