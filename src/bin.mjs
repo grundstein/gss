@@ -1,33 +1,44 @@
 #!/usr/bin/env node
 
 import cli from '@magic/cli'
-
-import run from './index.mjs'
 import fs from '@magic/fs'
+
+import { run } from './index.mjs'
+import { defaults } from './defaults.mjs'
 
 const prepare = async () => {
   const GSS_ENV_FILE = '/home/grundstein/environment'
 
+  /*
+   * copy process.env to make sure we do not pollute bash env vars
+   */
   let env = { ...process.env }
 
+  /*
+   * add GSS_ENV_FILE to the env variables
+   */
   const envExists = await fs.exists(GSS_ENV_FILE)
   if (envExists) {
     const ENV = await fs.readFile(GSS_ENV_FILE)
+    /*
+     * merge file vars first,
+     * making sure that the process.env overwrites them.
+     */
     env = {
-      ...env,
       ...JSON.parse(ENV),
+      ...env,
     }
   }
 
   const {
-    GSS_DIR = '/var/www/html',
-    GSS_HOST = '0.0.0.0',
-    GSS_PORT = 2350,
-    GSS_CERT_DIR = '/home/grundstein/ca',
-    GSS_PROXY_FILE = '/home/grundstein/proxies',
-    GSS_CORS_ORIGIN = '*',
-    GSS_CORS_HEADERS = 'Origin, X-Requested-With, Content-Type, Accept',
-    GSS_IMMUTABLE_FILETYPES = ['glb', 'mp4', 'webm', 'mp3'],
+    GSS_DIR = defaults.dir,
+    GSS_HOST = defaults.host,
+    GSS_PORT = defaults.port,
+    GSS_CERT_DIR = defaults.certDir,
+    GSS_PROXY_FILE = defaults.proxyFile,
+    GSS_CORS_ORIGIN = defaults.corsOirigin,
+    GSS_CORS_HEADERS = defaults.corsHeaders,
+    GSS_IMMUTABLE_FILETYPES = defaults.immutableFiletypes,
   } = env
 
   const opts = {
