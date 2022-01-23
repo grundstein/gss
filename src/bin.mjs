@@ -51,7 +51,6 @@ const prepare = async () => {
       '--cors-origin': GSS_CORS_ORIGIN,
       '--cors-headers': GSS_CORS_HEADERS,
       '--immutable-filetypes': GSS_IMMUTABLE_FILETYPES,
-      // '--cache': false,
     },
     single: [
       '--dir',
