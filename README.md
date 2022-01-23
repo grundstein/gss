@@ -76,6 +76,7 @@ update dependencies
 #### 0.0.8
 * update dependencies
 * handler does not error if called without arguments, uses defaults instead.
+* added defaults file and using it everywhere
 
 #### 0.0.9 - unreleased
 ...
