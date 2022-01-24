@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@grundstein/commons": "0.0.6",
-    "@magic/cli": "0.0.38",
+    "@magic/cli": "0.0.39",
     "@magic/fs": "0.0.22",
     "@magic/mime-types": "0.0.13"
   },
