@@ -87,5 +87,8 @@ fix typo
 #### 0.0.11
 readd path404 argument destructuring
 
-#### 0.0.12 - unreleased
+#### 0.0.12
+update dependencies
+
+#### 0.0.13 - unreleased
 ...
