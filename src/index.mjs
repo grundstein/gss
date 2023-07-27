@@ -1,6 +1,6 @@
 import { lib, log } from '@grundstein/commons'
-import { defaults } from './defaults.mjs'
 
+import { defaults } from './defaults.mjs'
 import { handler } from './handler.mjs'
 
 export const run = async (config = {}) => {
