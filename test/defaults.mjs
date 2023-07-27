@@ -1,6 +1,14 @@
+import http2 from 'node:http2'
+
 import { is, version } from '@magic/test'
 
 import { defaults } from '../src/defaults.mjs'
+
+const {
+  HTTP2_HEADER_ORIGIN,
+  HTTP2_HEADER_CONTENT_TYPE,
+  HTTP2_HEADER_ACCEPT,
+} = http2.constants
 
 const expected = {
   dir: '/var/www/html',
@@ -9,7 +17,7 @@ const expected = {
   certDir: '/home/grundstein/ca',
   proxyFile: '/home/grundstein/proxies',
   corsOrigin: '*',
-  corsHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+  corsHeaders: `${HTTP2_HEADER_ORIGIN}, x-requested-with, ${HTTP2_HEADER_CONTENT_TYPE}, ${HTTP2_HEADER_ACCEPT}`,
   immutableFiletypes: ['glb', 'mp4', 'webm', 'mp3'],
   cache: false,
   etag: false,

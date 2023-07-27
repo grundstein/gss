@@ -1,9 +1,18 @@
-import path from 'path'
+import http2 from 'node:http2'
+import path from 'node:path'
 
 import { fs, lib, log } from '@grundstein/commons'
 import mimeTypes from '@magic/mime-types'
 
 import { defaults } from './defaults.mjs'
+
+const {
+  HTTP2_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN,
+  HTTP2_HEADER_PATH,
+  HTTP2_HEADER_LOCATION,
+  HTTP2_HEADER_STATUS,
+  HTTP2_HEADER_CONTENT_ENCODING,
+} = http2.constants
 
 export const handler = (args = {}) => {
   const {
@@ -17,22 +26,27 @@ export const handler = (args = {}) => {
     path404,
   } = args
 
-  return async (req, res) => {
-    const time = log.hrtime()
+  return async (stream, headers) => {
+    const head = {}
 
-    let code = 404
+    const time = log.hrtime()
 
     let hostname = ''
     if (proxies.length) {
-      hostname = lib.getHostname(req)
+      hostname = lib.getHostname(headers)
 
       if (!proxies.includes(hostname)) {
-        lib.respond(req, res, { body: '403 - Invalid Hostname.', code: 403 })
+        const options = {
+          head: {
+            [HTTP2_HEADER_STATUS]: 403,
+          },
+        }
+        lib.respond(stream, headers, { body: '403 - Invalid Hostname.', head })
         return
       }
     }
 
-    let { url } = req
+    let url = headers[HTTP2_HEADER_PATH]
     if (url.includes('?')) {
       url = url.split('?')[0]
     }
@@ -42,7 +56,7 @@ export const handler = (args = {}) => {
       const extname = path.extname(url)
       if (!extname) {
         url += '/'
-        lib.respond(req, res, { code: 302, headers: { Location: url } })
+        lib.respond(stream, headers, { code: 302, head: { [HTTP2_HEADER_LOCATION]: url } })
         return
       }
     }
@@ -53,22 +67,24 @@ export const handler = (args = {}) => {
 
     let stat
 
+
+
     try {
-      const clientAcceptedEncodings = req.headers['accept-encoding']
+      const clientAcceptedEncodings = headers[HTTP2_HEADER_ACCEPT_ENCODING]
       if (!clientAcceptedEncodings?.includes('gzip')) {
         // this error gets swallowed
-        throw new Error('no encryption accepted.')
+        throw new Error('no compression accepted.')
       }
 
       stat = await fs.stat(zipFilePath)
       fullFilePath += '.gz'
-      code = 200
+      head[HTTP2_HEADER_STATUS] = 200
     } catch (_) {
       try {
         stat = await fs.stat(fullFilePath)
       } catch (e) {
         if (path404) {
-          code = 404
+          head[HTTP2_HEADER_STATUS] = 404
 
           /*
            * Find out if a gzipped 404.html file exists, if not load the unzipped variant.
@@ -85,18 +101,17 @@ export const handler = (args = {}) => {
 
         if (!stat && e.code !== 'ENOENT') {
           log.error(e)
-          lib.respond(req, res, { body: '500 - Unknown error.', code: 500 })
+          lib.respond(stream, { body: '500 - Unknown error.', head: { [HTTP2_HEADER_STATUS]: 500 } })
           return
         }
       }
     }
 
     if (stat) {
-      const mimeExtension = path.extname(url).substr(1)
-      const headers = {}
+      const mimeExtension = path.extname(url).substring(1)
 
       if (fullFilePath.endsWith('.gz')) {
-        headers['Content-Encoding'] = 'gzip'
+        head[HTTP2_HEADER_CONTENT_ENCODING] = 'gzip'
       }
 
       const file = {
@@ -108,14 +123,14 @@ export const handler = (args = {}) => {
       if (corsOrigin) {
         let val = '*'
         if (corsOrigin !== '*') {
-          const forwardedFor = req.headers['x-forwarded-for']
+          const forwardedFor = head['x-forwarded-for']
           if (forwardedFor && corsOrigin.includes(forwardedFor)) {
             val = forwardedFor
           }
         }
 
-        headers['Access-Control-Allow-Origin'] = val
-        headers['Access-Control-Allow-Headers'] = corsHeaders
+        head[HTTP2_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN] = val
+        head['access-control-allow-headers'] = corsHeaders
       }
 
       if (cache !== 'no') {
@@ -129,30 +144,29 @@ export const handler = (args = {}) => {
           immutable = `, immutable`
         }
 
-        headers['Cache-Control'] = `public, max-age=${maxAge}${immutable}`
+        head['cache-control'] = `public, max-age=${maxAge}${immutable}`
       }
 
       /*
        * the etag function creates an internal, in-memory cache of the etags.
-       */
-      headers.etag = etag({ file: fullFilePath, stat })
+       */fs
+      head.etag = etag({ file: fullFilePath, stat })
 
       /*
        * bail early if we have a client cache match,
        * but not if "--cache no" cli arg is used
        */
-      if (cache !== 'no' && headers.etag === req.headers['if-none-match']) {
-        lib.respond(req, res, { code: 304, headers, body: '' })
-        log.server.request(req, res, { time, type: 'cached' })
+      if (cache !== 'no' && head.etag === headers['if-none-match']) {
+        head[HTTP2_HEADER_STATUS] = 304
+        lib.respond(stream, headers, { head, body: '' })
         return
       }
 
-      lib.sendStream(req, res, { file, headers, code })
-      log.server.request(req, res, { time, type: 'static' })
+      lib.sendFile(stream, headers, { file, head, time, type: 'static'  })
       return
     }
 
-    lib.respond(req, res, { body: '404 - not found.', code: 404 })
-    log.server.request(req, res, { time, type: '404' })
+    // log.server.request(stream, headers, { head, time, type: '404' })
+    lib.respond(stream, headers, { body: '404 - not found.', head: {[HTTP2_HEADER_STATUS]:  404 } })
   }
 }

@@ -1,10 +1,17 @@
 #!/usr/bin/env node
 
+import http2 from 'node:http2'
+
 import cli from '@magic/cli'
 import fs from '@magic/fs'
 
 import { run } from './index.mjs'
 import { defaults } from './defaults.mjs'
+
+const {
+  HTTP2_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN,
+  HTTP2_HEADER_ACCESS_CONTROL_ALLOW_HEADERS,
+} = http2.constants
 
 const prepare = async () => {
   const GSS_ENV_FILE = '/home/grundstein/environment'
@@ -50,6 +57,7 @@ const prepare = async () => {
       ['--proxy-file'],
       ['--cors-origin', '--cors', '-c'],
       ['--cors-headers'],
+      ['--cert-dir'],
       ['--cache'],
       ['--immutable-filetypes'],
     ],
@@ -65,6 +73,7 @@ const prepare = async () => {
     },
     single: [
       '--dir',
+      '--cert-dir',
       '--host',
       '--port',
       '--cors-origin',
@@ -80,8 +89,8 @@ const prepare = async () => {
         '--host': 'hostname to listen to',
         '--port': 'port to listen to',
         '--proxy-file': 'file with a list of proxies, split on newlines',
-        '--cors-origin': 'value of the Access-Control-Allow-Origin http header',
-        '--cors-headers': 'value of the Access-Controll-Allow-Headers http header',
+        '--cors-origin': `value of the ${HTTP2_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN} http header`,
+        '--cors-headers': `value of the ${HTTP2_HEADER_ACCESS_CONTROL_ALLOW_HEADERS} http header`,
         '--immutable-filetypes': 'list of extensions that should be served as immutable',
         '--cache': 'set to "no" do not send cache-control headers and do not use statuscode 304.',
       },
