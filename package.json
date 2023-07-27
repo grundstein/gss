@@ -1,7 +1,7 @@
 {
   "name": "@grundstein/gss",
   "version": "0.0.14",
-  "author": "Wizards & Witches",
+  "author": "SystemKollektiv",
   "homepage": "https://grundstein.it/gss",
   "license": "AGPL-3.0",
   "description": "@grundstein static server. serves images, videos and other rich media files.",
@@ -50,6 +50,10 @@
     {
       "name": "jascha ehrenreich",
       "github": "jaeh"
+    },
+    {
+      "name": "litto",
+      "github": "mslitto"
     }
   ]
 }
