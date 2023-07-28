@@ -13,7 +13,7 @@ const {
 } = http2.constants
 
 const prepare = async () => {
-  const GSS_ENV_FILE = '/home/grundstein/environment'
+  const GSS_ENV_FILE = '/home/grundstein/environment.js'
 
   /*
    * copy process.env to make sure we do not pollute bash env vars
@@ -21,18 +21,17 @@ const prepare = async () => {
   let env = { ...process.env }
 
   /*
-   * add GSS_ENV_FILE to the env variables
+   * add GSS_ENV_FILE contents to the env variables
    */
-  const envExists = await fs.exists(GSS_ENV_FILE)
-  if (envExists) {
-    const ENV = await fs.readFile(GSS_ENV_FILE)
-    /*
-     * merge file vars first,
-     * making sure that the process.env overwrites them.
-     */
+  try {
+    const { env: environment } = await import(GSS_ENV_FILE)
     env = {
-      ...JSON.parse(ENV),
+      ...environment,
       ...env,
+    }
+  } catch (e) {
+    if (e.code !== 'ERR_MODULE_NOT_FOUND') {
+      console.log('error importing env', e)
     }
   }
 
