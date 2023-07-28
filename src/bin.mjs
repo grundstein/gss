@@ -2,8 +2,7 @@
 
 import http2 from 'node:http2'
 
-import cli from '@magic/cli'
-import fs from '@magic/fs'
+import { cli, fs } from '@grundstein/commons'
 
 import { run } from './index.mjs'
 import { defaults } from './defaults.mjs'
