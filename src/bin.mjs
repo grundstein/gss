@@ -2,7 +2,7 @@
 
 import http2 from 'node:http2'
 
-import { cli, fs } from '@grundstein/commons'
+import { cli, lib } from '@grundstein/commons'
 
 import { run } from './index.mjs'
 import { defaults } from './defaults.mjs'
@@ -13,27 +13,9 @@ const {
 } = http2.constants
 
 const prepare = async () => {
-  const GSS_ENV_FILE = '/home/grundstein/environment.js'
+  const ENV_FILE = '/home/grundstein/environment.js'
 
-  /*
-   * copy process.env to make sure we do not pollute bash env vars
-   */
-  let env = { ...process.env }
-
-  /*
-   * add GSS_ENV_FILE contents to the env variables
-   */
-  try {
-    const { env: environment } = await import(GSS_ENV_FILE)
-    env = {
-      ...environment,
-      ...env,
-    }
-  } catch (e) {
-    if (e.code !== 'ERR_MODULE_NOT_FOUND') {
-      console.log('error importing env', e)
-    }
-  }
+  const env = await lib.addEnv(ENV_FILE)
 
   const {
     GSS_DIR = defaults.dir,
