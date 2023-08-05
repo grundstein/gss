@@ -23,7 +23,7 @@ const prepare = async () => {
     GSS_PORT = defaults.port,
     GSS_CERT_DIR = defaults.certDir,
     GSS_PROXY_FILE = defaults.proxyFile,
-    GSS_CORS_ORIGIN = defaults.corsOirigin,
+    GSS_CORS_ORIGIN = defaults.corsOrigin,
     GSS_CORS_HEADERS = defaults.corsHeaders,
     GSS_IMMUTABLE_FILETYPES = defaults.immutableFiletypes,
   } = env
