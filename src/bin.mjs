@@ -13,9 +13,7 @@ const {
 } = http2.constants
 
 const prepare = async () => {
-  const ENV_FILE = '/home/grundstein/environment.js'
-
-  const env = await lib.addEnv(ENV_FILE)
+  const env = await lib.addEnv()
 
   const {
     GSS_DIR = defaults.dir,
