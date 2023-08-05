@@ -6,7 +6,7 @@ After=network.target
 [Service]
 Type=simple
 User=grundstein
-ExecStart=/usr/bin/gss
+ExecStart=/home/grundstein/services/gss/src/bin.mjs
 Restart=on-failure
 
 [Install]
