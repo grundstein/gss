@@ -22,6 +22,7 @@ const prepare = async () => {
     GSS_CORS_ORIGIN = defaults.corsOrigin,
     GSS_CORS_HEADERS = defaults.corsHeaders,
     GSS_IMMUTABLE_FILETYPES = defaults.immutableFiletypes,
+    GRUNDSTEIN_CERT_DIR = defaults.certDir,
   } = env
 
   const opts = {
@@ -41,11 +42,11 @@ const prepare = async () => {
       '--dir': GSS_DIR,
       '--host': GSS_HOST,
       '--port': GSS_PORT,
-      '--cert-dir': GSS_CERT_DIR,
       '--proxy-file': GSS_PROXY_FILE,
       '--cors-origin': GSS_CORS_ORIGIN,
       '--cors-headers': GSS_CORS_HEADERS,
       '--immutable-filetypes': GSS_IMMUTABLE_FILETYPES,
+      '--cert-dir': GRUNDSTEIN_CERT_DIR,
     },
     single: [
       '--dir',
