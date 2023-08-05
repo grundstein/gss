@@ -1,10 +1,10 @@
-import http2 from 'node:http2'
+import { constants } from '@grundstein/commons'
 
 const {
   HTTP2_HEADER_ORIGIN,
   HTTP2_HEADER_CONTENT_TYPE,
   HTTP2_HEADER_ACCEPT,
-} = http2.constants
+} = constants
 
 
 export const defaults = {
