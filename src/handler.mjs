@@ -67,8 +67,6 @@ export const handler = (args = {}) => {
 
     let stat
 
-
-
     try {
       const clientAcceptedEncodings = headers[HTTP2_HEADER_ACCEPT_ENCODING]
       if (!clientAcceptedEncodings?.includes('gzip')) {
@@ -101,7 +99,10 @@ export const handler = (args = {}) => {
 
         if (!stat && e.code !== 'ENOENT') {
           log.error(e)
-          lib.respond(stream, { body: '500 - Unknown error.', head: { [HTTP2_HEADER_STATUS]: 500 } })
+          lib.respond(stream, {
+            body: '500 - Unknown error.',
+            head: { [HTTP2_HEADER_STATUS]: 500 },
+          })
           return
         }
       }
@@ -149,7 +150,7 @@ export const handler = (args = {}) => {
 
       /*
        * the etag function creates an internal, in-memory cache of the etags.
-       */fs
+       */ fs
       head.etag = etag({ file: fullFilePath, stat })
 
       /*
@@ -162,11 +163,11 @@ export const handler = (args = {}) => {
         return
       }
 
-      lib.sendFile(stream, headers, { file, head, time, type: 'static'  })
+      lib.sendFile(stream, headers, { file, head, time, type: 'static' })
       return
     }
 
     // log.server.request(stream, headers, { head, time, type: '404' })
-    lib.respond(stream, headers, { body: '404 - not found.', head: {[HTTP2_HEADER_STATUS]:  404 } })
+    lib.respond(stream, headers, { body: '404 - not found.', head: { [HTTP2_HEADER_STATUS]: 404 } })
   }
 }

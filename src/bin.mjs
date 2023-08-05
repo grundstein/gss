@@ -7,10 +7,8 @@ import { cli, lib } from '@grundstein/commons'
 import { run } from './index.mjs'
 import { defaults } from './defaults.mjs'
 
-const {
-  HTTP2_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN,
-  HTTP2_HEADER_ACCESS_CONTROL_ALLOW_HEADERS,
-} = http2.constants
+const { HTTP2_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN, HTTP2_HEADER_ACCESS_CONTROL_ALLOW_HEADERS } =
+  http2.constants
 
 const prepare = async () => {
   const env = await lib.addEnv()

@@ -4,11 +4,7 @@ import { is, version } from '@magic/test'
 
 import { defaults } from '../src/defaults.mjs'
 
-const {
-  HTTP2_HEADER_ORIGIN,
-  HTTP2_HEADER_CONTENT_TYPE,
-  HTTP2_HEADER_ACCEPT,
-} = http2.constants
+const { HTTP2_HEADER_ORIGIN, HTTP2_HEADER_CONTENT_TYPE, HTTP2_HEADER_ACCEPT } = http2.constants
 
 const expected = {
   dir: '/var/www/html',
