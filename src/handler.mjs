@@ -148,7 +148,7 @@ export const handler = (args = {}) => {
 
       /*
        * the etag function creates an internal, in-memory cache of the etags.
-       */ fs
+       */
       head.etag = etag({ file: fullFilePath, stat })
 
       /*
