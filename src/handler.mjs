@@ -12,6 +12,8 @@ const {
   HTTP2_HEADER_LOCATION,
   HTTP2_HEADER_STATUS,
   HTTP2_HEADER_CONTENT_ENCODING,
+  HTTP2_HEADER_CACHE_CONTROL,
+  HTTP2_HEADER_IF_NONE_MATCH,
 } = http2.constants
 
 export const handler = (args = {}) => {
@@ -143,7 +145,7 @@ export const handler = (args = {}) => {
           immutable = `, immutable`
         }
 
-        head['cache-control'] = `public, max-age=${maxAge}${immutable}`
+        head[HTTP2_HEADER_CACHE_CONTROL] = `public, max-age=${maxAge}${immutable}`
       }
 
       /*
@@ -155,7 +157,7 @@ export const handler = (args = {}) => {
        * bail early if we have a client cache match,
        * but not if "--cache no" cli arg is used
        */
-      if (cache !== 'no' && head.etag === headers['if-none-match']) {
+      if (cache !== 'no' && head.etag === headers[HTTP2_HEADER_IF_NONE_MATCH]) {
         head[HTTP2_HEADER_STATUS] = 304
         lib.respond(stream, headers, { head, body: '' })
         return
