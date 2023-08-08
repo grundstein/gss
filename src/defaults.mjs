@@ -15,5 +15,12 @@ export const defaults = {
   cache: false,
   etag: false,
   proxies: [],
-  certDir: path.join(process.cwd(), 'node_modules', '@grundstein', 'commons', 'src', 'certificates'),
+  certDir: path.join(
+    process.cwd(),
+    'node_modules',
+    '@grundstein',
+    'commons',
+    'src',
+    'certificates',
+  ),
 }
