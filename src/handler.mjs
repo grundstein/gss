@@ -36,10 +36,8 @@ export const handler = (args = {}) => {
       hostname = lib.getHostname(headers)
 
       if (!proxies.includes(hostname)) {
-        const options = {
-          head: {
-            [HTTP2_HEADER_STATUS]: 403,
-          },
+        const head = {
+          [HTTP2_HEADER_STATUS]: 403,
         }
         lib.respond(stream, headers, { body: '403 - Invalid Hostname.', head })
         return
