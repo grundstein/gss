@@ -25,10 +25,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grundstein/server.git"
+    "url": "git+https://github.com/grundstein/gss.git"
   },
   "bugs": {
-    "url": "https://github.com/grundstein/server/issues"
+    "url": "https://github.com/grundstein/gss/issues"
   },
   "dependencies": {
     "@grundstein/commons": "github:grundstein/commons#http2",
